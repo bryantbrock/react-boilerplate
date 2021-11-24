@@ -1,61 +1,46 @@
 import React from 'react'
-import {connect} from 'react-redux'
+import prop from 'ramda/src/prop'
+import {useSelector} from 'react-redux'
 import {navigate} from 'navigation'
 import {Switch, Route} from 'react-router-dom'
 import {withRouter} from 'react-router-dom'
-import {authenticate} from 'app/user/User'
-import {
-  Dashboard, Signup, Login, ResetPassword
-} from 'app/pages'
+import SignIn from 'app/signin'
+import SignUp from 'app/signup'
+import Dashboard from 'app/dashboard'
 
-const publicRoutes = ['/login', '/signup', '/reset-password']
-const routes = [
-  {path: '/dashboard', title: 'Dashboard', component: Dashboard},
-  {path: '/signup', title: 'Signup', component: Signup},
-  {path: '/reset-password', title: 'Reset Password', component: ResetPassword},
-  {path: '/login', title: 'Login', component: Login},
+const publicRoutes = [
+  '/signin',
+  '/signup',
+  '/reset-password'
 ]
 
-const enhance = connect(
-  state => ({
-    fetchingUser: state.user.fetchingUser,
-  }), {authenticate}
-)
+const routes = [
+  {path: '/signin', title: 'Sign In', component: SignIn},
+  {path: '/signup', title: 'Sign Up', component: SignUp},
+  {path: '/dashboard', title: 'Dashboard', component: Dashboard},
+]
 
-class Routing extends React.Component {
-  renderRoutes() {
-    return <Switch>
-      {routes.map((route, idx) =>
-        <Route
-          exact={!route.notExact}
-          key={idx}
-          path={route.path}
-          component={withRouter(route.component)}
-          title={route.title} />
-      )}
-    </Switch>
-  }
-  render() {
-    if (!localStorage.getItem('userId')) {
-      // Don't redirect if a public route
-      if (publicRoutes.includes(window.location.pathname)) {
-        return this.renderRoutes()
-      }
+const Routing = () => {
+  const {isLoading} = useSelector(prop('user'))
 
-      navigate('/login')
-
-      return this.renderRoutes()
-    }
-
-    // Get logged in and load page
-    this.props.authenticate(
-      'login', localStorage.getItem({id: 'userId'})
+  return isLoading
+    ? (
+      <div className="flex justify-center w-full pt-40">
+        <div className="spinner spinner-md" />
+      </div>
     )
-
-    return this.props.fetchingUser ? <div className="flex justify-center w-full pt-40">
-      <div className="spinner spinner-md" />
-    </div> : this.renderRoutes()
-  }
+    : (
+      <Switch>
+        {routes.map((route, idx) =>
+          <Route
+            exact={!route.notExact}
+            key={idx}
+            path={route.path}
+            component={withRouter(route.component)}
+            title={route.title} />
+        )}
+      </Switch>
+    )
 }
 
-export default enhance(Routing)
+export default Routing

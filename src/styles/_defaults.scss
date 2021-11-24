@@ -1,0 +1,14 @@
+h1 { @apply text-3xl font-bold }
+h2 { @apply text-xl font-bold }
+h3 { @apply text-lg font-bold }
+a { @apply cursor-pointer}
+
+.danger {
+  @apply rounded border border-red-400 border-opacity-75 text-red-400 bg-opacity-10 bg-red-400
+}
+.warning {
+  @apply rounded border border-yellow-400 border-opacity-75 text-yellow-400 bg-opacity-10 bg-yellow-400
+}
+.success {
+  @apply rounded border border-green-400 border-opacity-75 text-green-400 bg-opacity-10 bg-green-400
+}

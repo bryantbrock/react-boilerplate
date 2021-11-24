@@ -4,13 +4,15 @@ module.exports = {
   purge: ['./src/**/*.{js,jsx,ts,tsx}', './public/index.html'],
   darkMode: false,
   theme: {
-    textColor: theme => theme('colors'),
-    colors: {
-      black: '#454545',
-      white: '#ffffff',
-      gray: {
-        100: '#EAEAEA',
-        200: '#EBEBEB',
+    extend: {
+      spacing: {
+        'lg': '540px'
+      },
+      fontFamily: {
+        sans: [
+          'Roboto',
+          ...defaultTheme.fontFamily.sans,
+        ]
       },
       borderRadius: {
         'none': '0',
@@ -19,11 +21,13 @@ module.exports = {
         'lg': '2rem',
         'full': '9999px',
       },
-      fontFamily: {
-        sans: [
-          'Roboto',
-          ...defaultTheme.fontFamily.sans,
-        ]
+      colors: {
+        black: '#454545',
+        white: '#ffffff',
+        gray: {
+          100: '#EAEAEA',
+          200: '#EBEBEB',
+        },
       },
     },
   },
